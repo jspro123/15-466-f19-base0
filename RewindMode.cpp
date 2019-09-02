@@ -84,7 +84,11 @@ void update_rewind(player_info& player, float elapsed) {
 	if (!player.rewind_log.empty()) {
 			glm::vec4 past_info = player.rewind_log.front();
 			player.update_coords(glm::vec2(past_info.x, past_info.y));
-			player.right_arm_angle = past_info.z;
+			if (player.sword_arm == PLAYER_ONE) {
+				player.right_arm_angle = past_info.z;
+			} else {
+				player.left_arm_angle = past_info.z;
+			}
 			player.is_attacking = (int)past_info.w;
 			player.seconds_passed += elapsed;
 			player.rewind_log.pop_front();
@@ -437,7 +441,7 @@ void RewindMode::update(float elapsed) {
 		}
 
 		playerTwo.rewind_log.push_front(glm::vec4(playerTwo.head.x, playerTwo.head.y,
-			playerTwo.right_arm_angle, playerTwo.is_attacking));
+			playerTwo.left_arm_angle, playerTwo.is_attacking));
 
 	} else if (playerTwo.is_rewinding == 1) {
 		update_rewind(playerTwo, elapsed);
